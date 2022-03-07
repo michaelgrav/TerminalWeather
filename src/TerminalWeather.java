@@ -7,12 +7,15 @@ import java.util.Scanner;
 
 
 public class TerminalWeather {
+    static String city;
+    static String state;
+
     public static void main(String[] args) throws IOException {
         checkArgs(args);
 
         String apikey = args[0];
-        String city = args[1];
-        String state = args[2];
+        city = args[1];
+        state = args[2];
 
         String theURL = "https://api.openweathermap.org/data/2.5/weather?q=";
         theURL += city + "," + state + "&units=imperial&appid=" + apikey;
@@ -20,7 +23,7 @@ public class TerminalWeather {
         URL apiurl = new URL(theURL);
         JSONObject weatherJSON = getJsonContents(apiurl);
 
-        printJSONFile(weatherJSON);
+        //printJSONFile(weatherJSON);
 
         printWeatherDataToTerm(weatherJSON);
     }
@@ -71,7 +74,9 @@ public class TerminalWeather {
     }
 
     static void printWeatherDataToTerm(JSONObject json) {
-        System.out.println("The current temperature is " + json.getJSONObject("main").getDouble("temp"));
+        String stateStripped = state;
+        stateStripped = stateStripped.replace("US-", "");
+        System.out.println("The current temperature in " + city + ", " + stateStripped  + " " + json.getJSONObject("main").getDouble("temp"));
     }
 }
 
