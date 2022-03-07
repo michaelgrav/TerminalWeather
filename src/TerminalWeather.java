@@ -1,85 +1,40 @@
 import org.json.*;
 
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.*;
 import java.util.Scanner;
-
 
 public class TerminalWeather {
     static String city;
     static String state;
 
     public static void main(String[] args) throws IOException {
-        checkArgs(args);
+        if (args.length == 0) {
+            System.out.println("Please input an api key!");
+            System.exit(-1);
+        }
 
         String apikey = args[0];
-        city = args[1];
-        state = args[2];
-
-        String theURL = "https://api.openweathermap.org/data/2.5/weather?q=";
-        theURL += city + "," + state + "&units=imperial&appid=" + apikey;
-
-        URL apiurl = new URL(theURL);
-        JSONObject weatherJSON = getJsonContents(apiurl);
 
         //printJSONFile(weatherJSON);
+        TerminalOutput output = new TerminalOutput(apikey);
 
-        printWeatherDataToTerm(weatherJSON);
-    }
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Would you like the current or future weather? Type current, future, or exit");
+        String usrInput = reader.nextLine();
 
-    static void parseResponseCode(int rCode) {
-        switch (rCode) {
-            case 429:
-                throw new RuntimeException("Exceeded the amount of allowed requests!");
-            case 404:
-                throw new RuntimeException("City not found");
+        if (usrInput.equalsIgnoreCase("future")) {
+            output.futureWeather();
+        } else if (usrInput.equalsIgnoreCase("current")) {
+            output.currentWeather();
+        } else {
+            System.exit(0);
         }
-    }
 
-    static void printJSONFile(JSONObject json) {
-        System.out.println(json.write(new StringWriter()).toString());
-    }
-
-    /** Method to check the amount of args passed into the program */
-    static void checkArgs(String[] arguments) {
-        if (arguments.length == 0) {
-            System.out.println("Not enough args!");
-            System.exit(-1);
-        }
-        if (arguments.length > 3) {
-            System.out.println("Too many args!");
-            System.exit(-1);
-        }
-    }
-
-    /** Method used to pull the JSON file from the openweatherAPI and return it as a JSONObject */
-    static JSONObject getJsonContents(URL url) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-        connection.setRequestMethod("GET");
-
-        connection.connect();
-        parseResponseCode(connection.getResponseCode());
-
-        String jsonContents = "";
-        Scanner reader = new Scanner(url.openStream());
-        while (reader.hasNext()) {
-            jsonContents += reader.nextLine();
-        }
-        reader.close();
-
-        return new JSONObject(jsonContents);
-    }
-
-    /** Method used to print the current weather to the console */
-    static void printWeatherDataToTerm(JSONObject json) {
-        System.out.println("The current temperature in " + city + ", " + state.replace("US-", "")  + " is " + json.getJSONObject("main").getDouble("temp"));
     }
 }
 
 /*
     Future stuff
     - ask user for api key and store it
-    - let user get weather by inputting the state and city
-
  */
