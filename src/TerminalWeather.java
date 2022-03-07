@@ -41,6 +41,7 @@ public class TerminalWeather {
         System.out.println(json.write(new StringWriter()).toString());
     }
 
+    /** Method to check the amount of args passed into the program */
     static void checkArgs(String[] arguments) {
         if (arguments.length == 0) {
             System.out.println("Not enough args!");
@@ -52,6 +53,7 @@ public class TerminalWeather {
         }
     }
 
+    /** Method used to pull the JSON file from the openweatherAPI and return it as a JSONObject */
     static JSONObject getJsonContents(URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         connection.setRequestMethod("GET");
@@ -69,6 +71,7 @@ public class TerminalWeather {
         return new JSONObject(jsonContents);
     }
 
+    /** Method used to print the current weather to the console */
     static void printWeatherDataToTerm(JSONObject json) {
         System.out.println("The current temperature in " + city + ", " + state.replace("US-", "")  + " is " + json.getJSONObject("main").getDouble("temp"));
     }
