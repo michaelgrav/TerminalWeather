@@ -9,6 +9,11 @@ public class TerminalWeather {
     static String state;
 
     public static void main(String[] args) throws IOException {
+        if (args.length == 0) {
+            System.out.println("Please input an api key!");
+            System.exit(-1);
+        }
+
         String apikey = args[0];
 
         //printJSONFile(weatherJSON);
@@ -32,6 +37,4 @@ public class TerminalWeather {
 /*
     Future stuff
     - ask user for api key and store it
-    - let user get weather by inputting the state and city
-
  */

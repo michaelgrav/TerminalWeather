@@ -11,14 +11,18 @@ public class TerminalOutput {
         apikey = key;
     }
 
+    // EVERYTHING TO DO WITH THE CURRENT WEATHER STARTS HERE
+
     /** Method used to print the current weather to the console */
-    void currentWeather() throws IOException {
+    public void currentWeather() throws IOException {
         String city, state;
         Scanner reader = new Scanner(System.in);
         System.out.print("Please input your city: ");
         city = reader.next();
         System.out.print("Please input your two digit state code: ");
         state = reader.next();
+
+        clearScreen();
 
         String theURL = "https://api.openweathermap.org/data/2.5/weather?q=";
         theURL += city + "," + ("US-" + state) + "&units=imperial&appid=" + apikey;
@@ -30,15 +34,42 @@ public class TerminalOutput {
                 + json.getJSONObject("main").getDouble("temp")
                 + " but it feels like " + json.getJSONObject("main").getDouble("feels_like"));
 
+        parseCurrentWeatherCode(json.getJSONArray("weather").getJSONObject(0).getInt("id"));
+
         System.exit(0);
     }
 
-    void futureWeather() {
+    private void parseCurrentWeatherCode(int weatherCode) {
+        if (200 <= weatherCode && weatherCode < 300) {
+            System.out.println("Looks like there's thunderstorms out! Be careful!");
+        } else if (300 <= weatherCode && weatherCode < 400) {
+            System.out.println("Looks like there's a slight drizzle out!");
+        } else if (500 <= weatherCode && weatherCode < 600) {
+            System.out.println("Looks like there's rain outside! Grab a coat!");
+        } else if (600 <= weatherCode && weatherCode < 700) {
+            System.out.println("Looks like there's snow outside! Grab your boots!");
+        } else if (700 <= weatherCode && weatherCode < 800) {
+            System.out.println("Somethings funky in the atmosphere, working on that functionality!");
+        } else if (weatherCode == 800) {
+            System.out.println("Clear skies ahead!");
+        } else if (800 < weatherCode) {
+            System.out.println("Looks like its cloudy out!");
+        }
+    }
+
+    // EVERYTHING TO DO WITH THE CURRENT WEATHER ENDS HERE
+
+    // EVERYTHING TO DO WITH THE FUTURE WEATHER STARTS HERE
+
+    public void futureWeather() {
+        System.out.println("Functionality not added yet!");
         System.exit(0);
     }
+
+    // EVERYTHING TO DO WITH THE FUTURE WEATHER ENDS HERE
 
     /** Method used to pull the JSON file from the openweatherAPI and return it as a JSONObject */
-    static JSONObject getJsonContents(URL url) throws IOException {
+    private static JSONObject getJsonContents(URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         connection.setRequestMethod("GET");
 
@@ -55,7 +86,7 @@ public class TerminalOutput {
         return new JSONObject(jsonContents);
     }
 
-    static void parseResponseCode(int rCode) {
+    private static void parseResponseCode(int rCode) {
         switch (rCode) {
             case 429:
                 throw new RuntimeException("Exceeded the amount of allowed requests!");
@@ -64,6 +95,12 @@ public class TerminalOutput {
             case 401:
                 throw new RuntimeException("Something is wrong with the API key");
         }
+    }
+
+    // Clear the console with ANSI escape codes. Note, this only will work on UNIX systems
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     // static void printJSONFile(JSONObject json) { System.out.println(json.write(new StringWriter()).toString()); }
