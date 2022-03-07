@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.Scanner;
 
 public class TerminalOutput {
-    private String apikey;
+    private final String apikey;
 
     public TerminalOutput(String key) {
         apikey = key;
@@ -17,16 +17,16 @@ public class TerminalOutput {
         Scanner reader = new Scanner(System.in);
         System.out.print("Please input your city: ");
         city = reader.next();
-        System.out.print("Please input your state (US-\"STATECODE\"): ");
+        System.out.print("Please input your two digit state code: ");
         state = reader.next();
 
         String theURL = "https://api.openweathermap.org/data/2.5/weather?q=";
-        theURL += city + "," + state + "&units=imperial&appid=" + apikey;
+        theURL += city + "," + ("US-" + state) + "&units=imperial&appid=" + apikey;
 
         URL apiurl = new URL(theURL);
         JSONObject json = getJsonContents(apiurl);
 
-        System.out.println("The current temperature in " + city + ", " + state.replace("US-", "") + " is "
+        System.out.println("The current temperature in " + city + ", " + state + " is "
                 + json.getJSONObject("main").getDouble("temp")
                 + " but it feels like " + json.getJSONObject("main").getDouble("feels_like"));
 
