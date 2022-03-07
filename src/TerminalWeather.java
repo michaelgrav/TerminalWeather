@@ -38,10 +38,7 @@ public class TerminalWeather {
     }
 
     static void printJSONFile(JSONObject json) {
-        StringWriter out = new StringWriter();
-        json.write(out);
-        String jsonText = out.toString();
-        System.out.println(jsonText);
+        System.out.println(json.write(new StringWriter()).toString());
     }
 
     static void checkArgs(String[] arguments) {
@@ -60,8 +57,7 @@ public class TerminalWeather {
         connection.setRequestMethod("GET");
 
         connection.connect();
-        int responseCode = connection.getResponseCode();
-        parseResponseCode(responseCode);
+        parseResponseCode(connection.getResponseCode());
 
         String jsonContents = "";
         Scanner reader = new Scanner(url.openStream());
@@ -74,9 +70,7 @@ public class TerminalWeather {
     }
 
     static void printWeatherDataToTerm(JSONObject json) {
-        String stateStripped = state;
-        stateStripped = stateStripped.replace("US-", "");
-        System.out.println("The current temperature in " + city + ", " + stateStripped  + " is " + json.getJSONObject("main").getDouble("temp"));
+        System.out.println("The current temperature in " + city + ", " + state.replace("US-", "")  + " is " + json.getJSONObject("main").getDouble("temp"));
     }
 }
 
