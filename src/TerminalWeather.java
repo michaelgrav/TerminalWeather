@@ -76,7 +76,7 @@ public class TerminalWeather {
     static void printWeatherDataToTerm(JSONObject json) {
         String stateStripped = state;
         stateStripped = stateStripped.replace("US-", "");
-        System.out.println("The current temperature in " + city + ", " + stateStripped  + " " + json.getJSONObject("main").getDouble("temp"));
+        System.out.println("The current temperature in " + city + ", " + stateStripped  + " is " + json.getJSONObject("main").getDouble("temp"));
     }
 }
 
