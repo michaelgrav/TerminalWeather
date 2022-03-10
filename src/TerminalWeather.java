@@ -1,13 +1,7 @@
-import org.json.*;
-
 import java.io.*;
-import java.net.*;
 import java.util.Scanner;
 
 public class TerminalWeather {
-    static String city;
-    static String state;
-
     public static void main(String[] args) throws IOException {
         if (args.length == 0) {
             System.out.println("Please input an api key!");
@@ -33,8 +27,3 @@ public class TerminalWeather {
 
     }
 }
-
-/*
-    Future stuff
-    - ask user for api key and store it
- */

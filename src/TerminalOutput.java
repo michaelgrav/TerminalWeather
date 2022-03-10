@@ -17,9 +17,8 @@ public class TerminalOutput {
     public void currentWeather() throws IOException {
         String city, state;
         Scanner reader = new Scanner(System.in);
-        System.out.print("Please input your city: ");
+        System.out.print("Please input your city and two digit state code: ");
         city = reader.next();
-        System.out.print("Please input your two digit state code: ");
         state = reader.next();
 
         clearScreen();
@@ -41,19 +40,19 @@ public class TerminalOutput {
 
     private void parseCurrentWeatherCode(int weatherCode) {
         if (200 <= weatherCode && weatherCode < 300) {
-            System.out.println("Looks like there's thunderstorms out! Be careful!");
+            System.out.println("Looks like there's thunderstorms out! Be careful! ( ☆ᗜ☆)ϞϞ");
         } else if (300 <= weatherCode && weatherCode < 400) {
-            System.out.println("Looks like there's a slight drizzle out!");
+            System.out.println("Looks like there's a slight drizzle out! 、ヽ｀、ヽ｀个c(ﾟ∀ﾟ∩)｀ヽ、｀ヽ、");
         } else if (500 <= weatherCode && weatherCode < 600) {
-            System.out.println("Looks like there's rain outside! Grab a coat!");
+            System.out.println("Looks like there's rain outside! Grab a coat! ｀、ヽ｀ヽ｀、ヽ(ノ＞＜)ノ ｀、ヽ｀☂ヽ｀、");
         } else if (600 <= weatherCode && weatherCode < 700) {
-            System.out.println("Looks like there's snow outside! Grab your boots!");
+            System.out.println("Looks like there's snow outside! Grab your boots! ㆆᴗㆆ)*✲ﾟ*");
         } else if (700 <= weatherCode && weatherCode < 800) {
             System.out.println("Somethings funky in the atmosphere, working on that functionality!");
         } else if (weatherCode == 800) {
-            System.out.println("Clear skies ahead!");
+            System.out.println("Clear skies ahead! ☞(⌐■ಎ■)☞  ☀️");
         } else if (800 < weatherCode) {
-            System.out.println("Looks like its cloudy out!");
+            System.out.println("Looks like its cloudy out! ⛅");
         }
     }
 
