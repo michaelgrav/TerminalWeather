@@ -6,21 +6,37 @@ import java.util.Scanner;
 
 public class TerminalOutput {
     private final String apikey;
+    private double lat, lon;
+    private String city, state;
+    private final Scanner reader = new Scanner(System.in);
 
     public TerminalOutput(String key) {
         apikey = key;
+    }
+
+    public void getLatLon() throws IOException {
+        System.out.print("Please input your city and two digit state code: ");
+        city = reader.next();
+        state = reader.next();
+
+        String theURL = "http://api.openweathermap.org/geo/1.0/direct?q=";
+        theURL += city + "," + ("US-" + state) + "&appid=" + apikey;
+
+        URL apiurl = new URL(theURL);
+        JSONObject json = getJsonContents(apiurl);
+
+        //The problem is the json starts with a [
+        lat = json.getDouble("lat");
+        lat = json.getDouble("lon");
+
+        System.out.println("lat: " + lat + " lon: " + lon);
     }
 
     // EVERYTHING TO DO WITH THE CURRENT WEATHER STARTS HERE
 
     /** Method used to print the current weather to the console */
     public void currentWeather() throws IOException {
-        String city, state;
-        Scanner reader = new Scanner(System.in);
-        System.out.print("Please input your city and two digit state code: ");
-        city = reader.next();
-        state = reader.next();
-
+        getLatLon();
         clearScreen();
 
         String theURL = "https://api.openweathermap.org/data/2.5/weather?q=";
